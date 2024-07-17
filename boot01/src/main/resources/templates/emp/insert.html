@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org/"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layouts/default_layout}"
+      layout:fragment="Content">
+<head>
+<meta charset="UTF-8">
+<title>사원 등록</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        text-align: center; /* 폼을 가운데 정렬 */
+    }
+    h3 {
+        color: #333;
+        border-bottom: 2px solid #333;
+        padding-bottom: 5px;
+    }
+    .form-container {
+        max-width: 400px;
+        margin: 0 auto;
+        background-color: #f9f9f9;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        text-align: left; /* 내용을 왼쪽 정렬 */
+    }
+    .form-container label {
+        font-weight: bold;
+    }
+    .form-container input[type="text"],
+    .form-container input[type="number"],
+    .form-container input[type="date"] {
+        width: calc(100% - 16px); /* padding 8px 이므로, 전체 너비에서 16px 제외 */
+        padding: 8px;
+        margin-top: 5px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+    .form-container button[type="submit"] {
+        padding: 10px 20px;
+        background-color: #4CAF50; /* 배경색 */
+        border: none;
+        color: white; /* 글자색 */
+        cursor: pointer;
+        border-radius: 5px;
+        font-size: 14px;
+        transition: background-color 0.3s ease; /* 호버 시 색상 변화를 위한 트랜지션 */
+    }
+    .form-container button[type="submit"]:hover {
+        background-color: #45a049; /* 호버 시 배경색 */
+    }
+</style>
+</head>
+<body>
+    <h3>사원 등록</h3>
+
+    <div class="form-container">
+        <form name="insertForm" th:action="@{empInsert}" method="post">
+            <div>
+                <label for="empname">이름</label>
+                <input type="text" id="empname" name="empname" required>
+            </div>
+            <div>
+                <label for="mgr">상사번호</label>
+                <input type="number" id="mgr" name="mgr">
+            </div>
+            <div>
+                <label for="sal">급여</label>
+                <input type="number" id="sal" name="sal" required>
+            </div>
+            <div>
+                <label for="deptid">부서번호</label>
+                <input type="number" id="deptid" name="deptid">
+            </div>
+            <div>
+                <label for="hiredate">입사일자</label>
+                <input type="date" id="hiredate" name="hiredate" required>
+            </div>
+            <button type="submit">등록</button>
+            <button type="button" th:onclick="|location.href='@{/empList}'|">목록</button>
+        </form>
+        <script>
+        	document.querySelector('form[name="insertForm"]');
+        	insertForm.addEventListener('submit',function(event){
+        		event.preventDefault();
+        		let ename=document.querySelector('input[name="empname"]');
+        		if(ename.value ==''){
+        			alert('이름은 필수 값입니다');
+        			ename.focus();
+        			return;
+        		}
+        		let mgr=document.querySelector('input[name="mgr"]');
+        		if(mgr.value == ''){
+        			alert('번호는 필수 값입니다');
+        			mgr.focus();
+        			return;
+        		}
+        		let sal=document.querySelector('input[name="sal"]');
+        		if(sal.value == ''){
+        			alert('급여는 필수 값입니다');
+        			sal.focus();
+        			return;
+        		}else if(sal.value < 1000 || sal.value > 99999){
+        			sal.value = '';
+        			alert('급여 범위는 1000부터 99999 사이입니다.');
+        			sal.focus();
+        			return;
+        		}
+      
+        		insertForm.submit();
+        	});
+        </script>
+    </div>
+
+</body>
+</html>
